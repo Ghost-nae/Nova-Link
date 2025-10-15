@@ -1,5 +1,7 @@
-package com.nova.Nova_Link;
+package com.nova.Nova_Link.Entities;
 
+import com.nova.Nova_Link.ENUMS.AccountStatus;
+import com.nova.Nova_Link.ENUMS.AccountType;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,8 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Account {
-    @id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -45,7 +47,6 @@ public class Account {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
-        this.status = AccountStatus.ACTIVE;
         if (this.balance == null) {
             this.balance = BigDecimal.ZERO;
         }

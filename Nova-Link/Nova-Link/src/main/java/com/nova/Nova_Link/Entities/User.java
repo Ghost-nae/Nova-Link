@@ -1,14 +1,16 @@
-package com.nova.Nova_Link;
+package com.nova.Nova_Link.Entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.spring
+
 
 @Entity
 @Getter
 @Setter
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
@@ -16,7 +18,7 @@ public class User {
 
 
     public User(){
-        this.id = 0;
+        this.id = Long.valueOf(0);
         this.name = "";
         this.email = "";
         this.contactNumber = "";
