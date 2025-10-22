@@ -16,4 +16,5 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     List<Account> findByBank(Bank bank);
     List<Account> findByStatus(AccountStatus status);
     List<Account> findByType(AccountType type);
+    List<Account> findByAccountId(Long accountId);
 }
