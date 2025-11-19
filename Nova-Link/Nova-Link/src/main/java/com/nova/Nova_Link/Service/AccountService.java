@@ -60,5 +60,19 @@ public class AccountService {
        accountRepository.save(account);
    }
 
+   public void pay(String accountNumber, BigDecimal amount) {
+       Account account = accountRepository.findByAccountNumber(accountNumber)
+               .orElseThrow(() -> new RuntimeException("Account not found"));
+       if (account.getStatus() != AccountStatus.Active) {
+           throw new RuntimeException("Account not Active");
+       }
+       if (account.getBalance().compareTo(amount) < 0) {
+          throw new RuntimeException("Insufficient funds");
+       } else  {
+           account.setBalance(account.getBalance().subtract(amount));
+       }
+       accountRepository.save(account);
+   }
+
 
 }
