@@ -50,7 +50,7 @@ public class TransactionService {
             accountReceiver.balance += accountSender.amount;
             System.out.println(accountSender.amount + "has been successfully sent")
         }
-        
+        transactionRepository.save(transaction);
     }
 
     protected void recordTransaction(Account senderAccount, Account recipientAccount, BigDecimal amount, TransactionType type, TransactionStatus status, String description) {
