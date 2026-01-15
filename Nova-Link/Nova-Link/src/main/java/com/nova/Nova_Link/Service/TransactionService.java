@@ -42,7 +42,15 @@ public class TransactionService {
         if (account.getStatus() != AccountStatus.Active) {
             throw new RuntimeException("Account not Active");
         }
-        if ()
+        if (accountSender.amount > accountSender.balance) {
+            throw new RuntimeException("Insufficient funds");
+        }
+        if (accountSender.amount <= accountSender.balance) {
+            accountSender.balance -= accountSender.amount;
+            accountReceiver.balance += accountSender.amount;
+            System.out.println(accountSender.amount + "has been successfully sent")
+        }
+        
     }
 
     protected void recordTransaction(Account senderAccount, Account recipientAccount, BigDecimal amount, TransactionType type, TransactionStatus status, String description) {
