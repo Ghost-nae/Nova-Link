@@ -66,4 +66,21 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
+    public String reversalOfFunds(Account senderAccount, Account recipientAccount, BigDecimal amount) {
+        if (transactionId == null || transactionId.isEmpty()) {
+            throw new IllegalStateException("The transaction is not found");
+        }
+        if (!accountSender.isPresent() ||
+                !accountReceiver.isPresent()) {
+            throw new IllegalStateException("Sender Account number or Recipient Account number not found");
+        }
+        do {
+            if (transactionStatus.SUCCESS) {
+                continue;
+            }
+            
+        } while (true);
+            
+    }
+
 }
