@@ -1,5 +1,5 @@
 package com.nova.Nova_Link.ENUMS;
 
 public enum TransactionStatus {
-    PENDING, SUCCESS, REJECTED, CANCELLED, FAILED
+    PENDING, SUCCESS, REJECTED, CANCELLED, FAILED, REVERSED
 }
