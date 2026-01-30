@@ -2,10 +2,16 @@ package com.nova.Nova_Link.Service;
 
 import com.nova.Nova_Link.ENUMS.AccountStatus;
 import com.nova.Nova_Link.Entities.Account;
+import com.nova.Nova_Link.Entities.User;
 import com.nova.Nova_Link.Repository.AccountRepository;
 import com.nova.Nova_Link.Repository.BankRepository;
+import com.nova.Nova_Link.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -75,4 +81,25 @@ public class AccountService {
    }
 
 
+    @Service
+    @RequiredArgsConstructor
+    public static class UserServiceImpl implements UserDetailsService {
+
+        private final UserRepository userRepository;
+
+        @Override
+        public UserDetails loadUserByUsername(String username)
+                throws UsernameNotFoundException {
+
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() ->
+                            new UsernameNotFoundException("User not found"));
+
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(),
+                    user.getPassword(),
+                    List.of(new SimpleGrantedAuthority(user.getRole().name()))
+            );
+        }
+    }
 }
