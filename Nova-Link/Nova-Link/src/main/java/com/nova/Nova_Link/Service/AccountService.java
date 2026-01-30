@@ -96,7 +96,7 @@ public class AccountService {
                             new UsernameNotFoundException("User not found"));
 
             return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
+                    user.getEmail(),
                     user.getPassword(),
                     List.of(new SimpleGrantedAuthority(user.getRole().name()))
             );
