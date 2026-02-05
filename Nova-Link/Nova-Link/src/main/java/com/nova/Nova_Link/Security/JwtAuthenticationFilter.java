@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +16,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userServiceImpl;
+    @Qualifier("accountService.UserServiceImpl")
+    private final UserDetailsService userService;
 
     @Override
     protected void doFilterInternal(
@@ -30,27 +33,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
 
-        // 1. Check Authorization header
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 2. Extract token
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
+        String jwt = authHeader.substring(7);
+        String userEmail = null;
 
-        // 3. Authenticate only if not already authenticated
+        try {
+            userEmail = jwtService.extractUsername(jwt);
+        } catch (Exception ex) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (userEmail != null &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails =
-                    userServiceImpl.loadUserByUsername(userEmail);
+                    userService.loadUserByUsername(userEmail);
 
-            // 4. Validate token
             if (jwtService.isTokenValid(jwt, userDetails)) {
 
                 UsernamePasswordAuthenticationToken authToken =
