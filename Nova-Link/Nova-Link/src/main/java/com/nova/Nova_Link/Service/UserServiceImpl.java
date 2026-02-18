@@ -3,6 +3,7 @@ package com.nova.Nova_Link.Service;
 import com.nova.Nova_Link.Entities.User;
 import com.nova.Nova_Link.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Primary
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService {
 
