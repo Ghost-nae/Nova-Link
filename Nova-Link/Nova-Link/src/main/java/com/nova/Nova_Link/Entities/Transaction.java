@@ -26,12 +26,14 @@ public class Transaction {
     private UUID transactionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_account_id", nullable = false)
     private Account senderAccount;
 
     @Column(nullable = false)
     private BigDecimal amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="recipient_account_id", nullable = false)
     private Account recipientAccount;
 
     @Enumerated(EnumType.STRING)
