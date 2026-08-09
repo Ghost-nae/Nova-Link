@@ -10,7 +10,7 @@ import com.nova.Nova_Link.Repository.TransactionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import com.nova.Nova_Link.Service.TransactionAuditService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,6 +21,7 @@ public class TransactionService {
 
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
+    private final TransactionAuditService transactionAuditService;
 
     // Transferring of funds
 
@@ -53,7 +54,7 @@ public class TransactionService {
 
         if (senderAccount.getBalance().compareTo(amount) < 0) {
 
-            recordTransaction(
+            transactionAuditService.recordFailedTransaction(
                     senderAccount,
                     recipientAccount,
                     amount,
