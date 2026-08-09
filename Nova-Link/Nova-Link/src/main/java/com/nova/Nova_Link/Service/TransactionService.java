@@ -110,10 +110,10 @@ public class TransactionService {
     public String reversalOfFunds(UUID originalTransactionId) {
 
         Transaction originalTransaction = transactionRepository.findByTransactionId(originalTransactionId)
-                .orElseThrow(() -> new RuntimeException("Original transaction not found"));
+                .orElseThrow(() -> new IllegalStateException("Original transaction not found"));
 
         if (originalTransaction.getStatus() != TransactionStatus.SUCCESS) {
-            throw new RuntimeException("Transaction cannot be reversed");
+            throw new IllegalStateException("Transaction cannot be reversed");
         }
 
         Account originalSender = originalTransaction.getSenderAccount();
@@ -121,7 +121,7 @@ public class TransactionService {
         BigDecimal amount = originalTransaction.getAmount();
 
         if (originalRecipient.getBalance().compareTo(amount) < 0) {
-            throw new RuntimeException("Recipient has insufficient funds for reversal");
+            throw new IllegalStateException("Recipient has insufficient funds for reversal");
         }
 
         originalRecipient.setBalance(originalRecipient.getBalance().subtract(amount));
