@@ -35,13 +35,21 @@ public class TransactionService {
         Account recipientAccount = accountRepository.findByAccountNumber(recipientAccountNumber)
                 .orElseThrow(() -> new IllegalStateException("Recipient account not found"));
 
+        if (senderAccountNumber.equals(recipientAccountNumber)) {
+            throw new IllegalArgumentException("Sender and recipient accounts cannot be the same");
+        }
         if (senderAccount.getStatus() != AccountStatus.Active) {
             throw new IllegalStateException("Sender account is not active");
+        }
+
+        if (recipientAccount.getStatus() != AccountStatus.Active) {
+            throw new IllegalStateException("Recipient account is not active");
         }
 
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Invalid transfer amount");
         }
+
 
         if (senderAccount.getBalance().compareTo(amount) < 0) {
 
@@ -85,14 +93,12 @@ public class TransactionService {
                                      String description) {
 
         Transaction transaction = new Transaction();
-        transaction.setTransactionId(UUID.randomUUID());
         transaction.setSenderAccount(senderAccount);
         transaction.setRecipientAccount(recipientAccount);
         transaction.setAmount(amount);
         transaction.setStatus(status);
         transaction.setDescription(description);
         transaction.setType(type);
-        transaction.setTimestamp(LocalDateTime.now());
 
         transactionRepository.save(transaction);
     }
