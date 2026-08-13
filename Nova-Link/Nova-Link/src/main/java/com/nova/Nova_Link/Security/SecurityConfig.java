@@ -61,7 +61,8 @@ public class SecurityConfig {
 
                         // Public auth endpoints
                         .requestMatchers("/api/auth/**").permitAll()
-
+                        .requestMatchers("/api/users/me").authenticated()
+                        
                         // Transfer requires authentication
                         .requestMatchers("/api/transactions/transfer")
                         .authenticated()
