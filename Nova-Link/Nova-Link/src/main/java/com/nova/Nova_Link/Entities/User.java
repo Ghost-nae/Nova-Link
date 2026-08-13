@@ -2,6 +2,7 @@ package com.nova.Nova_Link.Entities;
 
 import com.nova.Nova_Link.ENUMS.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -27,4 +29,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User() {}
 }
