@@ -17,19 +17,21 @@ public class TransactionController {
 
     @PostMapping("/transfer")
     public ResponseEntity<String> transferFunds(
-            @RequestParam String senderAccountNumber,
-            @RequestParam String recipientAccountNumber,
-            @RequestParam BigDecimal amount
+        @RequestParam String senderAccountNumber,
+        @RequestParam String recipientAccountNumber,
+        @RequestParam BigDecimal amount,
+        Authentication authentication
     ) {
 
         String response = transactionService.transferFunds(
-                senderAccountNumber,
-                recipientAccountNumber,
-                amount
+            senderAccountNumber,
+            recipientAccountNumber,
+            amount,
+            authentication.getName()
         );
 
         return ResponseEntity.ok(response);
-    }
+}
 
     @PostMapping("/reversal")
     public ResponseEntity<String> reversalOfFunds(
