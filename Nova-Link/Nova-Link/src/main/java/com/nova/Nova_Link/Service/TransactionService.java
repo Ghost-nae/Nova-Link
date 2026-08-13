@@ -26,12 +26,22 @@ public class TransactionService {
     // Transferring of funds
 
     @Transactional
-    public String transferFunds(String senderAccountNumber,
-                                String recipientAccountNumber,
-                                BigDecimal amount) {
+   public String transferFunds(
+        String senderAccountNumber,
+        String recipientAccountNumber,
+        BigDecimal amount,
+        String userEmail
+    ) {
 
-        Account senderAccount = accountRepository.findByAccountNumber(senderAccountNumber)
-                .orElseThrow(() -> new IllegalStateException("Sender account not found"));
+        Account senderAccount = accountRepository
+        .findByAccountNumberAndUserEmail(
+                senderAccountNumber,
+                userEmail
+        )
+        .orElseThrow(() ->
+                new IllegalStateException(
+                        "Sender account not found"
+                ));
 
         Account recipientAccount = accountRepository.findByAccountNumber(recipientAccountNumber)
                 .orElseThrow(() -> new IllegalStateException("Recipient account not found"));
