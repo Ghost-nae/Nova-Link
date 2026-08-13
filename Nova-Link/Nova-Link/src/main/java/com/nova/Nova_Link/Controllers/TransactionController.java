@@ -4,7 +4,7 @@ import com.nova.Nova_Link.Service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -39,5 +39,16 @@ public class TransactionController {
         String response = transactionService.reversalOfFunds(originalTransactionId);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<Transaction>> getMyTransactions(
+        Authentication authentication) {
+
+        return ResponseEntity.ok(
+            transactionService.getMyTransactions(
+                    authentication.getName()
+                )
+        );
     }
 }
