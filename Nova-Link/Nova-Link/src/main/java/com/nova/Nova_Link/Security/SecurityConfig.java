@@ -66,6 +66,7 @@ public class SecurityConfig {
                         // Transfer requires authentication
                         .requestMatchers("/api/transactions/transfer")
                         .authenticated()
+                        .requestMatchers("/api/accounts/my").authenticated()
 
                         // Admin-only reversal
                         // NOTE: Spring expects ROLE_ prefix internally
