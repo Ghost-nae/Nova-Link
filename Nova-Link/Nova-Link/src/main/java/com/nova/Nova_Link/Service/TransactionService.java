@@ -144,4 +144,23 @@ public class TransactionService {
 
         return "Reversal successful";
     }
+
+    //My transactions
+    public List<Transaction> getMyTransactions(String email) {
+
+    List<Account> accounts =
+            accountRepository.findByUserEmail(email);
+
+    return accounts.stream()
+            .flatMap(account ->
+                    transactionRepository
+                            .findBySenderAccountOrRecipientAccount(
+                                    account,
+                                    account
+                            )
+                            .stream()
+            )
+            .distinct()
+            .toList();
+}
 }
