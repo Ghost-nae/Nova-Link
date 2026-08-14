@@ -22,7 +22,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    @Qualifier("accountService.UserServiceImpl")
     private final UserDetailsService userService;
 
     @Override
