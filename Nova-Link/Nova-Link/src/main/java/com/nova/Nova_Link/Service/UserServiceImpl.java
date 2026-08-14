@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserDetailsService {
 
         String role = user.getRole() == null
                 ? "ROLE_USER"
-                : "ROLE_" + user.getRole().name();
+                : user.getRole().name();
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
