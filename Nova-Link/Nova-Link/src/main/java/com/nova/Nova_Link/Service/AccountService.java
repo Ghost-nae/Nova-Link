@@ -2,16 +2,10 @@ package com.nova.Nova_Link.Service;
 
 import com.nova.Nova_Link.ENUMS.AccountStatus;
 import com.nova.Nova_Link.Entities.Account;
-import com.nova.Nova_Link.Entities.User;
 import com.nova.Nova_Link.Repository.AccountRepository;
 import com.nova.Nova_Link.Repository.BankRepository;
-import com.nova.Nova_Link.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
