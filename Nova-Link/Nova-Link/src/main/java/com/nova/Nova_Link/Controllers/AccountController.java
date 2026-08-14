@@ -7,7 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.nova.Nova_Link.Service.AccountService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @RestController
@@ -16,6 +20,7 @@ import java.util.List;
 public class AccountController {
 
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     @GetMapping("/my")
     public List<Account> getMyAccounts(Authentication authentication) {
@@ -24,4 +29,13 @@ public class AccountController {
 
         return accountRepository.findByUserEmail(email);
     }
+
+    @PostMapping
+    public ResponseEntity<String> createAccount(@RequestParam Long bankId, 
+                                               @RequestBody Account account,
+                                               Authentication authentication){
+        String email = authentication.getName();
+        accountService.createAccount(bankId, account, email);
+        return ResponseEntity.ok("Account created successfully")
+                                               }
 }
