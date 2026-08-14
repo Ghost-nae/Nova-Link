@@ -33,6 +33,7 @@ public class AccountService {
         account.setUser(user);
         account.setBank(bank);
         account.setStatus(AccountStatus.ACTIVE);
+        account.setBalance(BigDecimal.ZERO);
     
         accountRepository.save(account);
    }
