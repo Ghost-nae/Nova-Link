@@ -30,7 +30,7 @@ public class AccountService {
        if (bankRepository.findById(bankId).isPresent()){
            account.setBank(bankRepository.findById(bankId).get());
        }
-       account.setStatus(AccountStatus.Active);
+       account.setStatus(AccountStatus.ACTIVE);
        accountRepository.save(account);
    }
 
@@ -58,7 +58,7 @@ public class AccountService {
        Account account = accountRepository.findByAccountNumber(accountNumber)
                .orElseThrow(() -> new RuntimeException("Account not found"));
 
-       if (account.getStatus() != AccountStatus.Active) {
+       if (account.getStatus() != AccountStatus.ACTIVE) {
            throw new RuntimeException("Account not Active");
        }
 
@@ -69,7 +69,7 @@ public class AccountService {
    public void pay(String accountNumber, BigDecimal amount) {
        Account account = accountRepository.findByAccountNumber(accountNumber)
                .orElseThrow(() -> new RuntimeException("Account not found"));
-       if (account.getStatus() != AccountStatus.Active) {
+       if (account.getStatus() != AccountStatus.ACTIVE) {
            throw new RuntimeException("Account not Active");
        }
        if (account.getBalance().compareTo(amount) < 0) {
