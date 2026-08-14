@@ -49,11 +49,11 @@ public class TransactionService {
         if (senderAccountNumber.equals(recipientAccountNumber)) {
             throw new IllegalArgumentException("Sender and recipient accounts cannot be the same");
         }
-        if (senderAccount.getStatus() != AccountStatus.Active) {
+        if (senderAccount.getStatus() != AccountStatus.ACTIVE) {
             throw new IllegalStateException("Sender account is not active");
         }
 
-        if (recipientAccount.getStatus() != AccountStatus.Active) {
+        if (recipientAccount.getStatus() != AccountStatus.ACTIVE) {
             throw new IllegalStateException("Recipient account is not active");
         }
 
