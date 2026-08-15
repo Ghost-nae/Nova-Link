@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.nova.Nova_Link.DTO.CreateAccountRequest;
 import java.util.List;
 
 @RestController
@@ -32,10 +33,10 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<String> createAccount(@RequestParam Long bankId, 
-                                               @RequestBody Account account,
+                                               @RequestBody CreateAccountRequest request,
                                                Authentication authentication){
         String email = authentication.getName();
-        accountService.createAccount(bankId, account, email);
+        accountService.createAccount(bankId, request, email);
         return ResponseEntity.ok("Account created successfully")
                                                }
 }
