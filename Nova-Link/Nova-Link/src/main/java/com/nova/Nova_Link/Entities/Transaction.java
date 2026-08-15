@@ -26,6 +26,10 @@ public class Transaction {
     private UUID transactionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "original_transaction_id")
+    private Transaction originalTransaction;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_account_id", nullable = false)
     private Account senderAccount;
 
