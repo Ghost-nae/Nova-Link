@@ -16,5 +16,6 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
     List<Transaction> findBySenderAccount(Account senderAccount);
     List<Transaction> findByRecipientAccount(Account recipientAccount);
     List<Transaction> findBySenderAccountOrRecipientAccount(Account senderAccount, Account recipientAccount);
+    boolean existsByOriginalTransaction(Transaction originalTransaction);
 }
 
