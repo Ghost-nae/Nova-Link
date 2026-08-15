@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.validation.Valid;
 import com.nova.Nova_Link.DTO.CreateAccountRequest;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<String> createAccount(@RequestParam Long bankId, 
-                                               @RequestBody CreateAccountRequest request,
+                                               @Valid @RequestBody CreateAccountRequest request,
                                                Authentication authentication){
         String email = authentication.getName();
         accountService.createAccount(bankId, request, email);
