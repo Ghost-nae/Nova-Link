@@ -4,6 +4,7 @@ import com.nova.Nova_Link.ENUMS.AccountStatus;
 import com.nova.Nova_Link.Entities.User;
 import com.nova.Nova_Link.Entities.Bank;
 import com.nova.Nova_Link.Entities.Account;
+import com.nova.Nova_Link.DTO.CreateAccountRequest;
 import com.nova.Nova_Link.Repository.AccountRepository;
 import com.nova.Nova_Link.Repository.BankRepository;
 import com.nova.Nova_Link.Repository.UserRepository;
@@ -24,12 +25,17 @@ public class AccountService {
     private final UserRepository userRepository;
 
     //Account Management
-   public void createAccount(Long bankId, Account account, String userEmail){
+   public void createAccount(Long bankId, CreateAccountRequest request, String userEmail){
        User user = UserRepository.findByEmail(userEmail)
            .orElseThrow(() -> new RuntimeException("User not found"));
        Bank bank = bankRepository.findById(bankId)
             .orElseThrow(() -> new RuntimeException("Bank not found"));
 
+       Account account = new Account();
+
+        account.setAccountHolderName(request.getAccountHolderName());
+        account.setType(request.getType());
+       
         account.setUser(user);
         account.setBank(bank);
         account.setStatus(AccountStatus.ACTIVE);
