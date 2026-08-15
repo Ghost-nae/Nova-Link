@@ -147,12 +147,29 @@ public class TransactionService {
                 originalRecipient,
                 originalSender,
                 amount,
-                TransactionType.REVERSAL,
-                TransactionStatus.SUCCESS,
-                "Reversal of transaction " + originalTransactionId
+                originalTransaction
         );
 
         return "Reversal successful";
+    }
+
+    protected void recordReversalTransaction(Account senderAccount,
+        Account recipientAccount,
+        BigDecimal amount,
+        Transaction originalTransaction) {
+
+        Transaction reversal = new Transaction();
+
+        reversal.setSenderAccount(senderAccount);
+        reversal.setRecipientAccount(recipientAccount);
+        reversal.setAmount(amount);
+        reversal.setStatus(TransactionStatus.SUCCESS);
+        reversal.setType(TransactionType.REVERSAL);
+        reversal.setDescription("Reversal of transaction " +
+            originalTransaction.getTransactionId());
+        reversal.setOriginalTransaction(originalTransaction);
+
+        transactionRepository.save(reversal);
     }
 
     //My transactions
