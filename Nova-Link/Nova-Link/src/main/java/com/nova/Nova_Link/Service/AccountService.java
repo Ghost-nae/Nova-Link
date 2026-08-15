@@ -34,9 +34,21 @@ public class AccountService {
         account.setBank(bank);
         account.setStatus(AccountStatus.ACTIVE);
         account.setBalance(BigDecimal.ZERO);
+        account.setAccountNumber(generateAccountNumber());
     
         accountRepository.save(account);
    }
+
+    public String generateAccountNumber() {
+        String accountNumber;
+
+        do {
+            accountNumber = String.valueOf(
+                100000000L + (long) (Math.random() * 900000000L)
+            );
+        } while (accountRepository.findByAccountNumber(accountNumber).isPresent());
+        return accountNumber;
+    }
 
     public Account getAccountById(Long accountId) {
         return accountRepository.findById(accountId)
