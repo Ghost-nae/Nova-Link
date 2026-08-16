@@ -125,6 +125,9 @@ public class TransactionService {
         if (originalTransaction.getStatus() != TransactionStatus.SUCCESS) {
             throw new IllegalStateException("Transaction cannot be reversed");
         }
+        if (originalRepository.existsByOriginalTransaction(originalTransaction)) {
+            throw new IllegalStateException("Transaction has already been reversed");
+        }
 
         Account originalSender = originalTransaction.getSenderAccount();
         Account originalRecipient = originalTransaction.getRecipientAccount();
