@@ -26,26 +26,52 @@ public class TransactionService {
     // Transferring of funds
 
     @Transactional
-   public String transferFunds(
-        String senderAccountNumber,
-        String recipientAccountNumber,
-        BigDecimal amount,
-        String userEmail
+    public String transferFunds(
+            String senderAccountNumber,
+            String recipientAccountNumber,
+            BigDecimal amount,
+            String userEmail
     ) {
-
-        Account senderAccount = accountRepository
-        .findByAccountNumberAndUserEmail(
+    
+        if (senderAccountNumber.equals(recipientAccountNumber)) {
+            throw new IllegalArgumentException(
+                    "Sender and recipient accounts cannot be the same"
+            );
+        }
+    
+        List<String> accountNumbers = List.of(
                 senderAccountNumber,
-                userEmail
-        )
-        .orElseThrow(() ->
-                new IllegalStateException(
-                        "Sender account not found"
-                ));
-
-       if(!senderAccount.getUser().getEmail().equals(userEmail)) {
-           throw new IllegalStateException("Sender Account does not belong to the user")
-       }
+                recipientAccountNumber
+        );
+    
+        List<Account> lockedAccounts =
+                accountRepository.findAccountsForUpdate(accountNumbers);
+    
+        if (lockedAccounts.size() != 2) {
+            throw new IllegalStateException("One or more accounts not found");
+        }
+    
+        Account senderAccount = lockedAccounts.stream()
+                .filter(account ->
+                        account.getAccountNumber()
+                                .equals(senderAccountNumber))
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalStateException("Sender account not found"));
+    
+        Account recipientAccount = lockedAccounts.stream()
+                .filter(account ->
+                        account.getAccountNumber()
+                                .equals(recipientAccountNumber))
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalStateException("Recipient account not found"));
+    
+        if (!senderAccount.getUser().getEmail().equals(userEmail)) {
+            throw new IllegalStateException(
+                    "Sender account does not belong to the user"
+            );
+        }
 
         Account recipientAccount = accountRepository.findByAccountNumberForUpdate(recipientAccountNumber)
                 .orElseThrow(() -> new IllegalStateException("Recipient account not found"));
