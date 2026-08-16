@@ -43,7 +43,11 @@ public class TransactionService {
                         "Sender account not found"
                 ));
 
-        Account recipientAccount = accountRepository.findByAccountNumber(recipientAccountNumber)
+       if(!senderAccount.getUser().getEmail().equals(userEmail)) {
+           throw new IllegalStateException("Sender Account does not belong to the user")
+       }
+
+        Account recipientAccount = accountRepository.findByAccountNumberForUpdate(recipientAccountNumber)
                 .orElseThrow(() -> new IllegalStateException("Recipient account not found"));
 
         if (senderAccountNumber.equals(recipientAccountNumber)) {
