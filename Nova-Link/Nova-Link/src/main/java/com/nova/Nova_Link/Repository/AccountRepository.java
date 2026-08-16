@@ -6,7 +6,10 @@ import com.nova.Nova_Link.Entities.Account;
 import com.nova.Nova_Link.Entities.Bank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,4 +24,11 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
         String accountNumber,
         String email
     );
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+           SELECT a 
+           FROM Account a
+           WHERE a.accountNumber = :accountNumber 
+    """)
+    Optional<Account> findByAccountNumberForUpdate(@Param("accountNumber") String accountNumber);
 }
